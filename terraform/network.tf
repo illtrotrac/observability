@@ -41,4 +41,17 @@ resource "google_compute_firewall" "allow_ssh" {
   target_tags   = ["admin-access"]
 }
 
+resource "google_compute_firewall" "allow_oltp_ingress" {
+  name    = "allow-oltp-ingress"
+  network = google_compute_network.vpc_network.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["4317", "4318"]
+  }
+
+  source_ranges = ["10.148.0.0/24"]
+  target_tags   = ["otel-collector"]
+}
+
 
