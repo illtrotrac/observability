@@ -24,5 +24,9 @@ resource "google_compute_instance" "source_vm" {
     SPLUNK_ACCESS_TOKEN = data.google_secret_manager_secret_version.splunk_access_token.secret_data
   }
 
+  metadata_startup_script = <<-EOT
+    echo '${file("../config/agent_config.yaml")}' | sudo tee /etc/otel/agent_config.yaml > /dev/null
+  EOT
 }
+
 
